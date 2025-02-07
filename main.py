@@ -554,36 +554,25 @@ def diagnose_symptoms():
     if not diag_counts:
         diagnosis_text.insert(tk.END, "No symptoms selected. Please add symptoms first.")
     else:
-        desired_order = ["COVID-19", "Influenza", "Dengue Fever", "Cardiovascular Disease", "Heart Failure", "Common Cold", "Tuberculosis", "Acute Hepatitis", "Infectious Disease", "Acute Coronary Syndrome", "Stroke", "Mild Stroke"]
-        special_labels = {
-            "COVID-19": ":",
-            "Influenza": ":",
-            "Dengue Fever": "::",
-            "Acute Coronary Syndrome": ":",
-            "Stroke": ":",
-            "Mild Stroke": "Tests:"
-        }
+        # Use all illnesses tallied, sorted alphabetically.
+        complete_order = sorted(diag_counts.keys())
+        already_output_tests = set()
         diagnosis_text.insert(tk.END, "Suggested Tests Based on Your Symptoms:\n\n")
-        first_line = True
-        for illness in desired_order:
-            if illness in diag_counts:
-                suggestion = illness_suggestions.get(illness)
-                if suggestion:
-                    tests = suggestion.get("tests", [])
-                    tests_list = [f"{t['category']}:{t['test']}" for t in tests]
-                    tests_str = ", ".join(tests_list)
-                    label = special_labels.get(illness, "Recommended Tests:")
-                    if first_line:
-                        diagnosis_text.insert(tk.END, f"{illness}: {label} {tests_str}\n")
-                        first_line = False
-                    else:
-                        diagnosis_text.insert(tk.END, f"- {illness}: {label} {tests_str}\n")
-                else:
-                    if first_line:
-                        diagnosis_text.insert(tk.END, f"{illness}: No test suggestions available.\n")
-                        first_line = False
-                    else:
-                        diagnosis_text.insert(tk.END, f"- {illness}: No test suggestions available.\n")
+        for illness in complete_order:
+            suggestion = illness_suggestions.get(illness)
+            if suggestion:
+                tests = suggestion.get("tests", [])
+                new_tests = []
+                for t in tests:
+                    test_str = f"{t['category']}:{t['test']}"
+                    if test_str not in already_output_tests:
+                        new_tests.append(test_str)
+                        already_output_tests.add(test_str)
+                if new_tests:
+                    tests_str = ", ".join(new_tests)
+                    diagnosis_text.insert(tk.END, f"- {illness}: Recommended Tests: {tests_str}\n")
+            else:
+                diagnosis_text.insert(tk.END, f"- {illness}: No test suggestions available.\n")
     diagnosis_text.config(state="disabled")
 
 diagnose_symptoms_btn = ttk.Button(frame_symptoms, text="Diagnose Symptoms", command=diagnose_symptoms)
