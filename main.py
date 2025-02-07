@@ -1,8 +1,10 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, filedialog, messagebox
 import json
 import re
 import sys
+import csv  # For saving/loading results as CSV
+import random  # For generating patient ID
 from datetime import datetime  # For date formatting
 
 # Import the illness suggestions from the separate module.
@@ -18,6 +20,7 @@ except Exception as e:
     print("Error loading symptoms.json:", e)
     sys.exit(1)
 
+
 # ---------------------------------
 # Helper Functions
 # ---------------------------------
@@ -27,11 +30,13 @@ def clean_text(text):
         text = text.replace("â‰¤", "≤")
     return text
 
+
 def get_field(data_dict, *keys, default=""):
     for key in keys:
         if key in data_dict:
             return data_dict[key]
     return default
+
 
 def format_range(range_obj):
     if isinstance(range_obj, list):
@@ -44,6 +49,7 @@ def format_range(range_obj):
         elif "expected" in range_obj:
             return str(range_obj["expected"])
     return str(range_obj)
+
 
 def is_qualitative(test, patient_info=None):
     if test.get("expectedValues"):
@@ -58,6 +64,7 @@ def is_qualitative(test, patient_info=None):
                 if isinstance(group, dict) and group.get("expectedValues"):
                     return True
     return False
+
 
 def get_normal_range(test, patient_info):
     age = patient_info.get("age")
@@ -166,11 +173,14 @@ def get_normal_range(test, patient_info):
             return clean_text(expected)
     return "N/A"
 
+
 def extract_unit(test, patient_info):
     if is_qualitative(test, patient_info):
         return "N/A"
+
     def is_unit_token(token):
         return not re.fullmatch(r'[\d\.\-\/]+', token)
+
     if "unit" in test and test["unit"].strip():
         return test["unit"].strip()
     val = get_normal_range(test, patient_info)
@@ -193,6 +203,12 @@ def extract_unit(test, patient_info):
                 return token
     return ""
 
+
+def generate_patient_id():
+    """Generates a patient ID in the format MT-XXXXXX where XXXXXX is a random 6-digit number."""
+    return f"MT-{random.randint(0, 999999):06d}"
+
+
 # ---------------------------------
 # Load the JSON data for tests/diagnosis.
 # ---------------------------------
@@ -206,8 +222,9 @@ except FileNotFoundError as e:
     print("File not found:", e)
     sys.exit(1)
 
-# Global patient info dictionary.
+# Global patient info dictionary and patient ID.
 patient_info = {"name": "", "age": None, "sex": ""}
+patient_id = None
 
 # ---------------------------------
 # Initialize Main Application Window
@@ -255,21 +272,36 @@ patient_sex_combo = ttk.Combobox(patient_frame, values=["Male", "Female"], state
 patient_sex_combo.grid(row=1, column=5, padx=5, pady=2)
 patient_sex_combo.set("Male")
 
+ttk.Label(patient_frame, text="Patient ID:").grid(row=2, column=0, padx=5, pady=2, sticky=tk.W)
+patient_id_entry = ttk.Entry(patient_frame, width=30, state="readonly")
+patient_id_entry.grid(row=2, column=1, padx=5, pady=2)
+
+
 def update_patient_info(event=None):
-    global patient_info
+    global patient_info, patient_id
     patient_info["name"] = patient_name_entry.get().strip()
     try:
         patient_info["age"] = int(patient_age_entry.get().strip())
     except ValueError:
         patient_info["age"] = None
     patient_info["sex"] = patient_sex_combo.get().strip()
+    # Generate and display a patient ID if a name is entered and no ID is present.
+    if patient_info["name"] and (patient_id is None or patient_id_entry.get().strip() == ""):
+        patient_id = generate_patient_id()
+        patient_id_entry.config(state="normal")
+        patient_id_entry.delete(0, tk.END)
+        patient_id_entry.insert(0, patient_id)
+        patient_id_entry.config(state="readonly")
     if "tree" in globals() and tree.selection():
         show_details(None)
+
 
 patient_age_entry.bind("<FocusOut>", update_patient_info)
 patient_age_entry.bind("<Return>", update_patient_info)
 patient_age_entry.bind("<KeyRelease>", update_patient_info)
 patient_sex_combo.bind("<<ComboboxSelected>>", update_patient_info)
+patient_name_entry.bind("<FocusOut>", update_patient_info)
+patient_name_entry.bind("<KeyRelease>", update_patient_info)
 
 # ---------------------------------
 # Illness Suggestions Section (in frame_right)
@@ -316,14 +348,17 @@ range_label.grid(row=2, column=0, padx=5, pady=2, sticky=tk.W)
 range_entry = ttk.Entry(input_frame, width=20, state="readonly")
 range_entry.grid(row=2, column=1, padx=5, pady=2, columnspan=3, sticky=tk.W)
 
+
 def validate_conventional_input(proposed):
     if proposed == "":
         return True
     pattern = r'^\d*\.?\d*(/\d*\.?\d*)?$'
     return re.fullmatch(pattern, proposed) is not None
 
+
 vcmd = (root.register(validate_conventional_input), '%P')
 results_dict = {}
+
 
 def add_result():
     exam = exam_entry.get().strip()
@@ -339,6 +374,7 @@ def add_result():
     else:
         item_id = results_tree.insert("", tk.END, values=(exam, abbr, conv, units, result_range))
         results_dict[exam] = item_id
+
 
 add_button = ttk.Button(input_frame, text="Add Result", command=add_result)
 add_button.grid(row=3, column=0, columnspan=4, pady=5)
@@ -360,6 +396,7 @@ results_tree.column("UNITS", width=80, anchor=tk.CENTER)
 results_tree.column("RANGE", width=100, anchor=tk.CENTER)
 results_tree.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 
+
 def delete_results():
     selected_items = results_tree.selection()
     for item in selected_items:
@@ -368,8 +405,148 @@ def delete_results():
         if exam_value in results_dict:
             del results_dict[exam_value]
 
-delete_result_btn = ttk.Button(results_frame, text="Delete Selected Results", command=delete_results)
-delete_result_btn.pack(padx=5, pady=5)
+
+# -------------------------------
+# New: Load Results and Auto-fill on Selection
+# -------------------------------
+def load_results():
+    """Load exam results and patient info from a CSV file."""
+    file_path = filedialog.askopenfilename(
+        filetypes=[("CSV Files", "*.csv"), ("All Files", "*.*")],
+        title="Open Exam Results CSV"
+    )
+    if not file_path:
+        return
+    try:
+        with open(file_path, "r", newline='', encoding="utf-8") as csvfile:
+            reader = csv.reader(csvfile)
+            rows = list(reader)
+        if not rows:
+            messagebox.showerror("Load Results", "The file is empty.")
+            return
+        header = rows[0]
+        # Expected header: Date, Patient Name, ID, Age, Sex, EXAM, ABBR, Conventional, UNITS, RANGE
+        # Clear current results
+        results_tree.delete(*results_tree.get_children())
+        results_dict.clear()
+        # If there is at least one data row, load patient info from the first row.
+        if len(rows) > 1:
+            first_row = rows[1]
+            if len(first_row) >= 10:
+                # Set patient info fields (Date remains as today_str)
+                patient_name_entry.delete(0, tk.END)
+                patient_name_entry.insert(0, first_row[1])
+                patient_age_entry.delete(0, tk.END)
+                patient_age_entry.insert(0, first_row[3])
+                patient_sex_combo.set(first_row[4])
+                patient_id_entry.config(state="normal")
+                patient_id_entry.delete(0, tk.END)
+                patient_id_entry.insert(0, first_row[2])
+                patient_id_entry.config(state="readonly")
+        # Add exam rows (columns 6 to 10)
+        for row in rows[1:]:
+            if len(row) < 10:
+                continue
+            exam, abbr, conv, units, range_val = row[5:10]
+            item_id = results_tree.insert("", tk.END, values=(exam, abbr, conv, units, range_val))
+            results_dict[exam] = item_id
+        messagebox.showinfo("Load Results", f"Loaded {len(rows) - 1} exam result(s) successfully.")
+    except Exception as e:
+        messagebox.showerror("Load Results", f"Error loading file:\n{str(e)}")
+
+
+def on_result_selected(event):
+    """When a result row is selected, auto-fill the exam fields."""
+    selected = results_tree.selection()
+    if not selected:
+        return
+    item = selected[0]
+    values = results_tree.item(item, "values")
+    # values: (EXAM, ABBR, Conventional, UNITS, RANGE)
+    exam_entry.config(state="normal")
+    exam_entry.delete(0, tk.END)
+    exam_entry.insert(0, values[0])
+    exam_entry.config(state="readonly")
+    abbr_entry.config(state="normal")
+    abbr_entry.delete(0, tk.END)
+    abbr_entry.insert(0, values[1])
+    abbr_entry.config(state="readonly")
+    conv_entry.config(state="normal")
+    conv_entry.delete(0, tk.END)
+    conv_entry.insert(0, values[2])
+    units_entry.config(state="normal")
+    units_entry.delete(0, tk.END)
+    units_entry.insert(0, values[3])
+    units_entry.config(state="readonly")
+    range_entry.config(state="normal")
+    range_entry.delete(0, tk.END)
+    range_entry.insert(0, values[4])
+    range_entry.config(state="readonly")
+
+
+results_tree.bind("<<TreeviewSelect>>", on_result_selected)
+# -------------------------------
+# End New Load/Select Commands
+# -------------------------------
+
+# Create a separate frame for the buttons so they appear on the same line.
+buttons_frame = ttk.Frame(results_frame)
+buttons_frame.pack(fill=tk.X, padx=5, pady=5)
+
+delete_result_btn = ttk.Button(buttons_frame, text="Delete Selected Results", command=delete_results)
+delete_result_btn.pack(side=tk.LEFT, padx=5)
+
+load_result_btn = ttk.Button(buttons_frame, text="Load Results", command=load_results)
+load_result_btn.pack(side=tk.LEFT, padx=5)
+
+
+def save_results():
+    """Prompt the user for a file name and save the exam results along with patient info to a CSV file."""
+    # Retrieve and validate required patient info fields.
+    patient_name = patient_name_entry.get().strip()
+    patient_age = patient_age_entry.get().strip()
+    patient_sex = patient_sex_combo.get().strip()
+    patient_id_value = patient_id_entry.get().strip()
+    date_str = today_str.strip()  # Date is set automatically.
+
+    if not (date_str and patient_name and patient_age and patient_sex and patient_id_value):
+        messagebox.showerror("Save Results",
+                             "Please ensure Date, Patient Name, Age, Sex, and Patient ID are filled before saving.")
+        return
+
+    # Set the default file name as PatientName_ID.csv
+    default_filename = f"{patient_name}_{patient_id_value}.csv"
+    file_path = filedialog.asksaveasfilename(
+        defaultextension=".csv",
+        initialfile=default_filename,
+        filetypes=[("CSV Files", "*.csv"), ("All Files", "*.*")],
+        title="Save Exam Results"
+    )
+    if not file_path:
+        return  # User cancelled
+
+    data_to_save = []
+    # Header row includes patient info columns.
+    header = ["Date", "Patient Name", "ID", "Age", "Sex", "EXAM", "ABBR", "Conventional", "UNITS", "RANGE"]
+    data_to_save.append(header)
+
+    for item in results_tree.get_children():
+        exam_values = results_tree.item(item, "values")  # (EXAM, ABBR, Conventional, UNITS, RANGE)
+        # Prepend the patient info to each row.
+        row = [date_str, patient_name, patient_id_value, patient_age, patient_sex] + list(exam_values)
+        data_to_save.append(row)
+
+    try:
+        with open(file_path, "w", newline='', encoding="utf-8") as csvfile:
+            writer = csv.writer(csvfile)
+            writer.writerows(data_to_save)
+        messagebox.showinfo("Save Results", f"Results saved successfully to:\n{file_path}")
+    except Exception as e:
+        messagebox.showerror("Save Results", f"Error saving results:\n{str(e)}")
+
+
+save_result_btn = ttk.Button(buttons_frame, text="Save Results", command=save_results)
+save_result_btn.pack(side=tk.LEFT, padx=5)
 
 # ---------------------------------
 # Categories & Tests Treeview Section (in frame_left)
@@ -380,9 +557,11 @@ tree.column("#0", width=400)
 tree.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 
 DELIMITER = "::"
+
+
 def populate_treeview():
     for category, cat_data in data.items():
-        # Skip keys that are not dictionaries or do not contain a testList (e.g., "lastUpdated")
+        # Skip keys that are not dictionaries or do not contain a testList.
         if not (isinstance(cat_data, dict) and "testList" in cat_data):
             continue
         tree.insert("", tk.END, iid=category, text=category)
@@ -390,7 +569,10 @@ def populate_treeview():
         for test_key, test in tests.items():
             test_name = test.get("name", test_key)
             tree.insert(category, tk.END, iid=f"{category}{DELIMITER}{test_key}", text=test_name)
+
+
 populate_treeview()
+
 
 def show_details(event):
     detail_text.config(state="normal")
@@ -476,6 +658,7 @@ def show_details(event):
         range_entry.config(state="readonly")
     detail_text.config(state="disabled")
 
+
 def on_illness_selected(event):
     suggestion_text.config(state="normal")
     suggestion_text.delete("1.0", tk.END)
@@ -487,14 +670,19 @@ def on_illness_selected(event):
     suggestion = illness_suggestions[illness]
     suggestion_text.insert(tk.END, f"Suggestion for {illness}:\n\n")
     suggestion_text.insert(tk.END, f"{suggestion['description']}\n\n")
-    suggestion_text.insert(tk.END, "Recommended Tests:\n")
-    for test_item in suggestion["tests"]:
-        cat = test_item.get("category")
-        test_key = test_item.get("test")
-        test = data.get(cat, {}).get("testList", {}).get(test_key, {})
-        test_name = test.get("name", test_key)
-        suggestion_text.insert(tk.END, f" - {test_name} ({cat}:{test_key})\n")
+    # For Influenza, also include the tests.
+    if illness == "Influenza":
+        tests = suggestion.get("tests", [])
+        if tests:
+            tests_list = [f"{t['category']}:{t['test']}" for t in tests]
+            tests_str = ", ".join(tests_list)
+            suggestion_text.insert(tk.END, f"{illness}\nRecommended Tests: {tests_str}\n")
+        else:
+            suggestion_text.insert(tk.END, f"{illness}\n")
+    else:
+        suggestion_text.insert(tk.END, f"{illness}\n")
     suggestion_text.config(state="disabled")
+
 
 tree.bind("<<TreeviewSelect>>", show_details)
 illness_combo.bind("<<ComboboxSelected>>", on_illness_selected)
@@ -502,12 +690,13 @@ illness_combo.bind("<<ComboboxSelected>>", on_illness_selected)
 # ---------------------------------
 # Symptoms Segment (in frame_symptoms)
 # ---------------------------------
-ttk.Label(frame_symptoms, text="Select Symptom:", font=("Arial", 10, "bold")).pack(anchor="w", padx=5, pady=(5,2))
+ttk.Label(frame_symptoms, text="Select Symptom:", font=("Arial", 10, "bold")).pack(anchor="w", padx=5, pady=(5, 2))
 symptom_options = list(symptoms_mapping.keys())
 symptom_combobox = ttk.Combobox(frame_symptoms, values=symptom_options, state="readonly", width=30)
 symptom_combobox.pack(anchor="w", padx=5, pady=2)
 if symptom_options:
     symptom_combobox.set(symptom_options[0])
+
 
 def add_symptom():
     symptom = symptom_combobox.get().strip()
@@ -519,14 +708,29 @@ def add_symptom():
             return
     symptoms_tree.insert("", "end", values=(symptom,))
 
+
 add_symptom_btn = ttk.Button(frame_symptoms, text="Add Symptom", command=add_symptom)
 add_symptom_btn.pack(anchor="w", padx=5, pady=2)
 
 # Create the symptoms treeview with multiple selection allowed.
-symptoms_tree = ttk.Treeview(frame_symptoms, columns=("Symptom",), show="headings", height=10, selectmode="extended")
+symptoms_tree = ttk.Treeview(frame_symptoms, columns=("Symptom",), show="headings", selectmode="extended")
 symptoms_tree.heading("Symptom", text="Selected Symptoms")
 symptoms_tree.column("Symptom", width=250, anchor="w")
 symptoms_tree.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
+
+
+# Bind frame_symptoms configure event to update treeview height (using 20% of frame height)
+def update_treeview_height(event):
+    # Assume an average row height of ~20 pixels.
+    new_height_pixels = event.height * 0.2  # 20% of frame height in pixels
+    new_rows = int(new_height_pixels / 20)
+    if new_rows < 1:
+        new_rows = 1
+    symptoms_tree.config(height=new_rows)
+
+
+frame_symptoms.bind("<Configure>", update_treeview_height)
+
 
 # Button to delete selected symptoms.
 def delete_symptoms():
@@ -534,8 +738,16 @@ def delete_symptoms():
     for item in selected_items:
         symptoms_tree.delete(item)
 
+
 delete_symptom_btn = ttk.Button(frame_symptoms, text="Delete Selected Symptoms", command=delete_symptoms)
 delete_symptom_btn.pack(anchor="w", padx=5, pady=2)
+
+# ---------------------------------
+# Create Diagnosis Text Widget BEFORE its usage.
+# ---------------------------------
+diagnosis_text = tk.Text(frame_symptoms, wrap=tk.WORD, height=10, state="disabled")
+diagnosis_text.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
+
 
 # ---------------------------------
 # Diagnose Symptoms Command (Summary Output)
@@ -554,32 +766,27 @@ def diagnose_symptoms():
     if not diag_counts:
         diagnosis_text.insert(tk.END, "No symptoms selected. Please add symptoms first.")
     else:
-        # Use all illnesses tallied, sorted alphabetically.
+        # Sort illnesses alphabetically.
         complete_order = sorted(diag_counts.keys())
-        already_output_tests = set()
         diagnosis_text.insert(tk.END, "Suggested Tests Based on Your Symptoms:\n\n")
         for illness in complete_order:
             suggestion = illness_suggestions.get(illness)
             if suggestion:
                 tests = suggestion.get("tests", [])
-                new_tests = []
-                for t in tests:
-                    test_str = f"{t['category']}:{t['test']}"
-                    if test_str not in already_output_tests:
-                        new_tests.append(test_str)
-                        already_output_tests.add(test_str)
+                new_tests = [f"{t['category']}:{t['test']}" for t in tests]
+                diagnosis_text.insert(tk.END, f"- {illness}:\n")
                 if new_tests:
-                    tests_str = ", ".join(new_tests)
-                    diagnosis_text.insert(tk.END, f"- {illness}: Recommended Tests: {tests_str}\n")
+                    # Indent the tests line.
+                    diagnosis_text.insert(tk.END, "    " + ", ".join(new_tests) + "\n\n")
+                else:
+                    diagnosis_text.insert(tk.END, "\n")
             else:
-                diagnosis_text.insert(tk.END, f"- {illness}: No test suggestions available.\n")
+                diagnosis_text.insert(tk.END, f"- {illness}: No test suggestions available.\n\n")
     diagnosis_text.config(state="disabled")
+
 
 diagnose_symptoms_btn = ttk.Button(frame_symptoms, text="Diagnose Symptoms", command=diagnose_symptoms)
 diagnose_symptoms_btn.pack(anchor="w", padx=5, pady=5)
-
-diagnosis_text = tk.Text(frame_symptoms, wrap=tk.WORD, height=10, state="disabled")
-diagnosis_text.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 
 # ---------------------------------
 # Final Initialization

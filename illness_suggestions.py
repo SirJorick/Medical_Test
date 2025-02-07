@@ -347,6 +347,23 @@ illness_suggestions = {
         "tests": [
             {"category": "Liver_Function", "test": "Albumin"}
         ]
+    },
+    "Mild Cough": {
+        "description": (
+            "A mild cough is often associated with common viral respiratory infections such as COVID-19, Influenza, or the Common Cold."
+        ),
+        "tests": [
+            {"category": "Vital_Signs", "test": "Temperature"},
+            {"category": "Hematology", "test": "WBC"}
+        ]
+    },
+    "Severe Cough": {
+        "description": (
+            "A severe cough may be indicative of a more serious respiratory condition such as Tuberculosis."
+        ),
+        "tests": [
+            {"category": "Infectious_Disease", "test": "IGRA_TB"}
+        ]
     }
 }
 
