@@ -1,0 +1,91 @@
+1. Blood_Chemistry
+FBS: Fasting Blood Sugar
+BUN: Blood Urea Nitrogen
+Creatinine: Creatinine
+Uric_Acid: Uric Acid
+2. Lipid_Profile
+Cholesterol: Total Cholesterol
+Triglycerides: Triglycerides
+HDL: High-Density Lipoprotein
+LDL: Low-Density Lipoprotein
+VLDL: Very Low-Density Lipoprotein
+CHOL_HDL_Ratio: Cholesterol/HDL Ratio
+3. Liver_Function
+SGPT_ALT: ALT (SGPT)
+SGOT_AST: AST (SGOT)
+Bilirubin: Bilirubin
+Albumin: Albumin
+4. Thyroid_Function
+TSH: TSH
+Free_T4: Free T4
+Free_T3: Free T3
+5. Electrolytes
+Sodium: Sodium
+Potassium: Potassium
+Calcium: Calcium
+Magnesium: Magnesium
+Phosphorus: Phosphorus
+6. Hematology
+Hemoglobin: Hemoglobin
+Hematocrit: Hematocrit
+WBC: WBC Count
+RBC: RBC Count
+Platelet_Count: Platelet Count
+7. Cardiac_Markers
+Troponin: Troponin
+BNP: BNP
+Cardiac_Risk: Cardiac Risk
+8. Coagulation
+Prothrombin_Time: Prothrombin Time (PT)
+INR: International Normalized Ratio (INR)
+D_Dimer: D-Dimer
+9. Pancreatic
+Amylase: Amylase
+Lipase: Lipase
+10. Inflammatory
+CRP: C-Reactive Protein (CRP)
+ESR: Erythrocyte Sedimentation Rate (ESR)
+11. Other_Markers
+Vitamin_D: Vitamin D (25-OH)
+Iron: Serum Iron
+Ferritin: Ferritin
+12. Vital_Signs
+Temperature: Temperature
+BP: Blood Pressure
+Oxygen: Oxygen Saturation
+Heart_Rate: Heart Rate
+13. Prostate
+PSA: Prostate-Specific Antigen (PSA)
+14. Tumor_Markers
+CEA: Carcinoembryonic Antigen (CEA)
+AFP: Alpha-Fetoprotein (AFP)
+CA_19-9: CA 19-9
+CA_125: CA 125
+15. Immunology
+ANA: Antinuclear Antibody (ANA)
+RF: Rheumatoid Factor (RF)
+Anti_CCP: Anti-Cyclic Citrullinated Peptide (Anti-CCP)
+16. Infectious_Disease
+HIV: HIV Antibody/Antigen
+HBsAg: Hepatitis B Surface Antigen (HBsAg)
+Anti_HCV: Hepatitis C Antibody (Anti-HCV)
+RPR: Rapid Plasma Reagin (RPR)
+HIV_CD4: CD4 Count
+HIV_Viral_Load: HIV Viral Load
+Gonorrhea_NAAT: Gonorrhea NAAT
+Measles_IgM: Measles IgM
+Polio_PCR: Polio Virus PCR
+Hepatitis_A_IgM: Hepatitis A IgM
+HBcIgM: Hepatitis B Core IgM
+IGRA_TB: Interferon Gamma Release Assay (IGRA)
+Dengue_NS1: Dengue NS1 Antigen
+Malaria_Smear: Malaria Parasite Smear
+17. Urinalysis
+Urine_pH: Urine pH
+Specific_Gravity: Specific Gravity
+Urine_Protein: Urine Protein
+Urine_Glucose: Urine Glucose
+Urine_Ketones: Urine Ketones
+Urine_Blood: Urine Blood
+Urine_Nitrites: Urine Nitrites
+Leukocyte_Esterase: Leukocyte Esterase

@@ -1,0 +1,2 @@
+Parameter,Range,Unit,Sex,Reason,Abnormality,Standard_Medication,Standard_Dosage,Standard_Count_Per_Week,Standard_Frequency,Alternative_Treatment,Alternative_Dosage,Alternative_Count_Per_Week,Alternative_Frequency,Conclusion
+Fasting Blood Sugar,70-115,mg/dL,Both,Indicates glucose metabolism, used to diagnose diabetes.,Fasting blood sugar higher than normal may indicate diabetes or prediabetes.,Metformin,500 mg,7,Twice daily,Dietary changes, exercise, and weight loss,N/A,N/A,N/A,Monitor blood sugar levels and adjust lifestyle or medication accordingly.

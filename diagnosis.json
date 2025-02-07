@@ -1,0 +1,833 @@
+{
+  "lastUpdated": "2025-02-06",
+  "Blood_Chemistry": {
+    "description": "Tests that assess various chemical components in the blood to evaluate organ function, metabolism, and disease states.",
+    "testList": {
+      "FBS": {
+        "name": "Fasting Blood Sugar",
+        "description": "Measures blood glucose after an overnight fast to assess glucose metabolism.",
+        "unit": "mg/dL",
+        "ageSexGroups": {
+          "Male": {
+            "Child (3-12)": { "low": 70, "high": 100, "unit": "mg/dL" },
+            "Teen (13-19)": { "low": 70, "high": 105, "unit": "mg/dL" },
+            "Young Adult (20-39)": { "low": 70, "high": 110, "unit": "mg/dL" },
+            "Middle-Aged (40-59)": { "low": 70, "high": 115, "unit": "mg/dL" },
+            "Senior (60+)": { "low": 70, "high": 120, "unit": "mg/dL" }
+          },
+          "Female": {
+            "Child (3-12)": { "low": 70, "high": 100, "unit": "mg/dL" },
+            "Teen (13-19)": { "low": 70, "high": 105, "unit": "mg/dL" },
+            "Young Adult (20-39)": { "low": 70, "high": 110, "unit": "mg/dL" },
+            "Middle-Aged (40-59)": { "low": 70, "high": 115, "unit": "mg/dL" },
+            "Senior (60+)": { "low": 70, "high": 120, "unit": "mg/dL" }
+          }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "BUN": {
+        "name": "Blood Urea Nitrogen",
+        "description": "Assesses kidney function and protein metabolism by measuring urea nitrogen.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 7, "high": 20, "unit": "mg/dL" } },
+          "Female": { "All Ages": { "low": 7, "high": 20, "unit": "mg/dL" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "Creatinine": {
+        "name": "Creatinine",
+        "description": "Measures creatinine levels to assess kidney function.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 0.74, "high": 1.35, "unit": "mg/dL" } },
+          "Female": { "All Ages": { "low": 0.59, "high": 1.04, "unit": "mg/dL" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "Uric_Acid": {
+        "name": "Uric Acid",
+        "description": "Determines the level of uric acid to evaluate conditions such as gout.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 3.4, "high": 7.0, "unit": "mg/dL" } },
+          "Female": { "All Ages": { "low": 2.4, "high": 6.0, "unit": "mg/dL" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      }
+    }
+  },
+  "Lipid_Profile": {
+    "description": "Evaluates lipid levels to assess cardiovascular risk and metabolic status.",
+    "testList": {
+      "Cholesterol": {
+        "name": "Total Cholesterol",
+        "description": "Measures the total cholesterol level in the blood.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 125, "high": 200, "unit": "mg/dL" } },
+          "Female": { "All Ages": { "low": 125, "high": 200, "unit": "mg/dL" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "Triglycerides": {
+        "name": "Triglycerides",
+        "description": "Measures the level of triglycerides to evaluate the risk of heart disease.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 35, "high": 150, "unit": "mg/dL" } },
+          "Female": { "All Ages": { "low": 35, "high": 150, "unit": "mg/dL" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "HDL": {
+        "name": "High-Density Lipoprotein",
+        "description": "Measures HDL cholesterol, known as 'good' cholesterol.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 40, "high": 60, "unit": "mg/dL" } },
+          "Female": { "All Ages": { "low": 50, "high": 60, "unit": "mg/dL" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "LDL": {
+        "name": "Low-Density Lipoprotein",
+        "description": "Measures LDL cholesterol, known as 'bad' cholesterol.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 0, "high": 100, "unit": "mg/dL" } },
+          "Female": { "All Ages": { "low": 0, "high": 100, "unit": "mg/dL" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "VLDL": {
+        "name": "Very Low-Density Lipoprotein",
+        "description": "Measures VLDL cholesterol levels.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 5, "high": 40, "unit": "mg/dL" } },
+          "Female": { "All Ages": { "low": 5, "high": 40, "unit": "mg/dL" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "CHOL_HDL_Ratio": {
+        "name": "Cholesterol/HDL Ratio",
+        "description": "Calculates the ratio of total cholesterol to HDL to assess cardiovascular risk.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 3.5, "high": 5, "unit": "ratio" } },
+          "Female": { "All Ages": { "low": 3.5, "high": 5, "unit": "ratio" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      }
+    }
+  },
+  "Liver_Function": {
+    "description": "Assesses liver enzymes and proteins to evaluate liver health.",
+    "testList": {
+      "SGPT_ALT": {
+        "name": "ALT (SGPT)",
+        "description": "Measures alanine aminotransferase, an enzyme predominantly found in the liver.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 7, "high": 55, "unit": "U/L" } },
+          "Female": { "All Ages": { "low": 7, "high": 55, "unit": "U/L" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "SGOT_AST": {
+        "name": "AST (SGOT)",
+        "description": "Measures aspartate aminotransferase to help evaluate liver and heart health.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 8, "high": 48, "unit": "U/L" } },
+          "Female": { "All Ages": { "low": 8, "high": 48, "unit": "U/L" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "Bilirubin": {
+        "name": "Bilirubin",
+        "description": "Measures bilirubin levels to assess liver function and hemolysis.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 0.3, "high": 1.2, "unit": "mg/dL" } },
+          "Female": { "All Ages": { "low": 0.3, "high": 1.2, "unit": "mg/dL" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "Albumin": {
+        "name": "Albumin",
+        "description": "Measures albumin, a protein produced by the liver, to assess liver function and nutritional status.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 3.4, "high": 5.4, "unit": "g/dL" } },
+          "Female": { "All Ages": { "low": 3.4, "high": 5.4, "unit": "g/dL" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      }
+    }
+  },
+  "Thyroid_Function": {
+    "description": "Evaluates thyroid hormone levels to assess thyroid gland function.",
+    "testList": {
+      "TSH": {
+        "name": "TSH",
+        "description": "Measures thyroid-stimulating hormone to evaluate thyroid function.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 0.4, "high": 4.0, "unit": "mIU/L" } },
+          "Female": { "All Ages": { "low": 0.4, "high": 4.0, "unit": "mIU/L" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "Free_T4": {
+        "name": "Free T4",
+        "description": "Measures free thyroxine to assess the active thyroid hormone available.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 0.8, "high": 1.8, "unit": "ng/dL" } },
+          "Female": { "All Ages": { "low": 0.8, "high": 1.8, "unit": "ng/dL" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "Free_T3": {
+        "name": "Free T3",
+        "description": "Measures free triiodothyronine to assess thyroid function.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 2.3, "high": 4.2, "unit": "pg/mL" } },
+          "Female": { "All Ages": { "low": 2.3, "high": 4.2, "unit": "pg/mL" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      }
+    }
+  },
+  "Electrolytes": {
+    "description": "Assesses levels of essential electrolytes for maintaining fluid balance and nerve function.",
+    "testList": {
+      "Sodium": {
+        "name": "Sodium",
+        "description": "Measures sodium levels to assess fluid balance and kidney function.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 135, "high": 145, "unit": "mEq/L" } },
+          "Female": { "All Ages": { "low": 135, "high": 145, "unit": "mEq/L" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "Potassium": {
+        "name": "Potassium",
+        "description": "Measures potassium levels to evaluate heart and muscle function.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 3.5, "high": 5.0, "unit": "mEq/L" } },
+          "Female": { "All Ages": { "low": 3.5, "high": 5.0, "unit": "mEq/L" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "Calcium": {
+        "name": "Calcium",
+        "description": "Measures calcium levels important for bone health and muscle function.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 8.5, "high": 10.2, "unit": "mg/dL" } },
+          "Female": { "All Ages": { "low": 8.5, "high": 10.2, "unit": "mg/dL" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "Magnesium": {
+        "name": "Magnesium",
+        "description": "Measures magnesium levels essential for muscle and nerve function.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 1.7, "high": 2.2, "unit": "mg/dL" } },
+          "Female": { "All Ages": { "low": 1.7, "high": 2.2, "unit": "mg/dL" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "Phosphorus": {
+        "name": "Phosphorus",
+        "description": "Measures phosphorus levels critical for bone health and energy production.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 2.5, "high": 4.5, "unit": "mg/dL" } },
+          "Female": { "All Ages": { "low": 2.5, "high": 4.5, "unit": "mg/dL" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      }
+    }
+  },
+  "Hematology": {
+    "description": "Evaluates blood components including red and white cells, hemoglobin, and platelets.",
+    "testList": {
+      "Hemoglobin": {
+        "name": "Hemoglobin",
+        "description": "Measures the amount of hemoglobin in the blood.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 13.8, "high": 17.2, "unit": "g/dL" } },
+          "Female": { "All Ages": { "low": 12.1, "high": 15.1, "unit": "g/dL" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "Hematocrit": {
+        "name": "Hematocrit",
+        "description": "Measures the proportion of blood volume occupied by red blood cells.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 40.7, "high": 50.3, "unit": "%" } },
+          "Female": { "All Ages": { "low": 36.1, "high": 44.3, "unit": "%" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "WBC": {
+        "name": "WBC Count",
+        "description": "Measures the number of white blood cells to assess immune function.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 4500, "high": 11000, "unit": "cells/µL" } },
+          "Female": { "All Ages": { "low": 4500, "high": 11000, "unit": "cells/µL" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "RBC": {
+        "name": "RBC Count",
+        "description": "Measures the number of red blood cells to evaluate oxygen carrying capacity.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 4.7, "high": 6.1, "unit": "million cells/µL" } },
+          "Female": { "All Ages": { "low": 4.2, "high": 5.4, "unit": "million cells/µL" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "Platelet_Count": {
+        "name": "Platelet Count",
+        "description": "Measures the number of platelets in the blood, which are important for clotting.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 150000, "high": 450000, "unit": "platelets/µL" } },
+          "Female": { "All Ages": { "low": 150000, "high": 450000, "unit": "platelets/µL" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      }
+    }
+  },
+  "Cardiac_Markers": {
+    "description": "Assesses markers indicative of heart muscle damage and cardiovascular risk.",
+    "testList": {
+      "Troponin": {
+        "name": "Troponin",
+        "description": "Measures troponin levels to detect heart muscle injury.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 0, "high": 0.04, "unit": "ng/mL" } },
+          "Female": { "All Ages": { "low": 0, "high": 0.04, "unit": "ng/mL" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "BNP": {
+        "name": "BNP",
+        "description": "Measures B-type Natriuretic Peptide to assess heart failure.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 0, "high": 100, "unit": "pg/mL" } },
+          "Female": { "All Ages": { "low": 0, "high": 100, "unit": "pg/mL" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "Cardiac_Risk": {
+        "name": "Cardiac Risk",
+        "description": "Qualitative assessment of cardiac risk based on various biomarkers.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "expectedValues": ["Low", "Intermediate", "High"] } },
+          "Female": { "All Ages": { "expectedValues": ["Low", "Intermediate", "High"] } }
+        },
+        "applicableSex": ["Male", "Female"]
+      }
+    }
+  },
+  "Coagulation": {
+    "description": "Evaluates blood clotting ability through various coagulation tests.",
+    "testList": {
+      "Prothrombin_Time": {
+        "name": "Prothrombin Time (PT)",
+        "description": "Measures the time it takes for blood to clot.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 11, "high": 13.5, "unit": "seconds" } },
+          "Female": { "All Ages": { "low": 11, "high": 13.5, "unit": "seconds" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "INR": {
+        "name": "International Normalized Ratio (INR)",
+        "description": "Standardized measure of blood clotting.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 0.8, "high": 1.1, "unit": "ratio" } },
+          "Female": { "All Ages": { "low": 0.8, "high": 1.1, "unit": "ratio" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "D_Dimer": {
+        "name": "D-Dimer",
+        "description": "Measures D-Dimer levels to evaluate clot formation and breakdown.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 0, "high": 0.5, "unit": "µg/mL" } },
+          "Female": { "All Ages": { "low": 0, "high": 0.5, "unit": "µg/mL" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      }
+    }
+  },
+  "Pancreatic": {
+    "description": "Assesses pancreatic enzyme levels to evaluate pancreatic function.",
+    "testList": {
+      "Amylase": {
+        "name": "Amylase",
+        "description": "Measures the level of amylase to assess pancreatic function.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 30, "high": 110, "unit": "U/L" } },
+          "Female": { "All Ages": { "low": 30, "high": 110, "unit": "U/L" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "Lipase": {
+        "name": "Lipase",
+        "description": "Measures the level of lipase, an enzyme produced by the pancreas.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 10, "high": 140, "unit": "U/L" } },
+          "Female": { "All Ages": { "low": 10, "high": 140, "unit": "U/L" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      }
+    }
+  },
+  "Inflammatory": {
+    "description": "Measures markers of inflammation to assess the presence and severity of inflammatory processes.",
+    "testList": {
+      "CRP": {
+        "name": "C-Reactive Protein (CRP)",
+        "description": "Measures CRP levels to assess systemic inflammation.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 0, "high": 10, "unit": "mg/L" } },
+          "Female": { "All Ages": { "low": 0, "high": 10, "unit": "mg/L" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "ESR": {
+        "name": "Erythrocyte Sedimentation Rate (ESR)",
+        "description": "Measures the rate at which red blood cells sediment, indicating inflammation.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 0, "high": 15, "unit": "mm/hr" } },
+          "Female": { "All Ages": { "low": 0, "high": 20, "unit": "mm/hr" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      }
+    }
+  },
+  "Other_Markers": {
+    "description": "Assesses additional markers that provide insight into nutritional status and other health conditions.",
+    "testList": {
+      "Vitamin_D": {
+        "name": "Vitamin D (25-OH)",
+        "description": "Measures vitamin D levels to assess bone health and immune function.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 20, "high": 50, "unit": "ng/mL" } },
+          "Female": { "All Ages": { "low": 20, "high": 50, "unit": "ng/mL" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "Iron": {
+        "name": "Serum Iron",
+        "description": "Measures serum iron to evaluate iron status in the body.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 65, "high": 176, "unit": "µg/dL" } },
+          "Female": { "All Ages": { "low": 50, "high": 170, "unit": "µg/dL" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "Ferritin": {
+        "name": "Ferritin",
+        "description": "Measures ferritin to assess iron storage levels.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 24, "high": 336, "unit": "ng/mL" } },
+          "Female": { "All Ages": { "low": 11, "high": 307, "unit": "ng/mL" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      }
+    }
+  },
+  "Vital_Signs": {
+    "description": "Measures essential signs that indicate overall health status.",
+    "testList": {
+      "Temperature": {
+        "name": "Temperature",
+        "description": "Measures body temperature.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 36.1, "high": 37.2, "unit": "°C" } },
+          "Female": { "All Ages": { "low": 36.1, "high": 37.2, "unit": "°C" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "BP": {
+        "name": "Blood Pressure",
+        "description": "Measures blood pressure to assess cardiovascular health.",
+        "ageSexGroups": {
+          "Male": {
+            "Adult (20-59)": { "expected": "120/80 mmHg" },
+            "Senior (60+)": { "expected": "130/90 mmHg" }
+          },
+          "Female": {
+            "Adult (20-59)": { "expected": "110/70 mmHg" },
+            "Senior (60+)": { "expected": "120/80 mmHg" }
+          }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "Oxygen": {
+        "name": "Oxygen Saturation",
+        "description": "Measures the percentage of oxygen-saturated hemoglobin in the blood.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 95, "high": 100, "unit": "%" } },
+          "Female": { "All Ages": { "low": 95, "high": 100, "unit": "%" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "Heart_Rate": {
+        "name": "Heart Rate",
+        "description": "Measures the number of heart beats per minute.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 60, "high": 100, "unit": "bpm" } },
+          "Female": { "All Ages": { "low": 60, "high": 100, "unit": "bpm" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      }
+    }
+  },
+  "Prostate": {
+    "description": "Evaluates prostate health through specific antigen measurement.",
+    "testList": {
+      "PSA": {
+        "name": "Prostate-Specific Antigen (PSA)",
+        "description": "Measures PSA levels to screen for prostate health issues.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 0, "high": 4, "unit": "ng/mL" } }
+        },
+        "applicableSex": ["Male"]
+      }
+    }
+  },
+  "Tumor_Markers": {
+    "description": "Measures markers that may indicate the presence of certain types of cancers.",
+    "testList": {
+      "CEA": {
+        "name": "Carcinoembryonic Antigen (CEA)",
+        "description": "Measures CEA levels, which can be elevated in certain cancers.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 0, "high": 3, "unit": "ng/mL" } },
+          "Female": { "All Ages": { "low": 0, "high": 3, "unit": "ng/mL" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "AFP": {
+        "name": "Alpha-Fetoprotein (AFP)",
+        "description": "Measures AFP levels to screen for liver and germ cell tumors.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 0, "high": 10, "unit": "ng/mL" } },
+          "Female": { "All Ages": { "low": 0, "high": 10, "unit": "ng/mL" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "CA_19-9": {
+        "name": "CA 19-9",
+        "description": "Measures CA 19-9 levels, often used in the evaluation of pancreatic cancer.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 0, "high": 37, "unit": "U/mL" } },
+          "Female": { "All Ages": { "low": 0, "high": 37, "unit": "U/mL" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "CA_125": {
+        "name": "CA 125",
+        "description": "Measures CA 125 levels, which can be elevated in ovarian cancer.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 0, "high": 35, "unit": "U/mL" } },
+          "Female": { "All Ages": { "low": 0, "high": 35, "unit": "U/mL" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      }
+    }
+  },
+  "Immunology": {
+    "description": "Assesses immune system markers and autoimmune antibodies.",
+    "testList": {
+      "ANA": {
+        "name": "Antinuclear Antibody (ANA)",
+        "description": "Tests for antibodies that target the cell nucleus, indicating autoimmune activity.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "expectedValues": ["Positive", "Negative"] } },
+          "Female": { "All Ages": { "expectedValues": ["Positive", "Negative"] } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "RF": {
+        "name": "Rheumatoid Factor (RF)",
+        "description": "Measures RF levels to help diagnose rheumatoid arthritis.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 0, "high": 14, "unit": "IU/mL" } },
+          "Female": { "All Ages": { "low": 0, "high": 14, "unit": "IU/mL" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "Anti_CCP": {
+        "name": "Anti-Cyclic Citrullinated Peptide (Anti-CCP)",
+        "description": "Detects antibodies specific for rheumatoid arthritis.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "expectedValues": ["Positive", "Negative"] } },
+          "Female": { "All Ages": { "expectedValues": ["Positive", "Negative"] } }
+        },
+        "applicableSex": ["Male", "Female"]
+      }
+    }
+  },
+  "Infectious_Disease": {
+    "description": "Screening tests for various infectious diseases.",
+    "testList": {
+      "HIV": {
+        "name": "HIV Antibody/Antigen",
+        "description": "Screening test for HIV infection.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "expectedValues": ["Positive", "Negative"] } },
+          "Female": { "All Ages": { "expectedValues": ["Positive", "Negative"] } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "HBsAg": {
+        "name": "Hepatitis B Surface Antigen (HBsAg)",
+        "description": "Screening test for Hepatitis B infection.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "expectedValues": ["Positive", "Negative"] } },
+          "Female": { "All Ages": { "expectedValues": ["Positive", "Negative"] } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "Anti_HCV": {
+        "name": "Hepatitis C Antibody (Anti-HCV)",
+        "description": "Screening test for Hepatitis C infection.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "expectedValues": ["Positive", "Negative"] } },
+          "Female": { "All Ages": { "expectedValues": ["Positive", "Negative"] } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "RPR": {
+        "name": "Rapid Plasma Reagin (RPR)",
+        "description": "Screening test for syphilis.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "expectedValues": ["Reactive", "Non-Reactive"] } },
+          "Female": { "All Ages": { "expectedValues": ["Reactive", "Non-Reactive"] } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "HIV_CD4": {
+        "name": "CD4 Count",
+        "description": "Measures the number of CD4 T lymphocytes in HIV patients.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 500, "high": 1500, "unit": "cells/mm³" } },
+          "Female": { "All Ages": { "low": 500, "high": 1500, "unit": "cells/mm³" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "HIV_Viral_Load": {
+        "name": "HIV Viral Load",
+        "description": "Measures the number of copies of HIV RNA per milliliter of blood.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 0, "high": 20, "unit": "copies/mL" } },
+          "Female": { "All Ages": { "low": 0, "high": 20, "unit": "copies/mL" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "Gonorrhea_NAAT": {
+        "name": "Gonorrhea NAAT",
+        "description": "Nucleic acid amplification test for detecting gonorrhea.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "expectedValues": ["Positive", "Negative"] } },
+          "Female": { "All Ages": { "expectedValues": ["Positive", "Negative"] } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "Measles_IgM": {
+        "name": "Measles IgM",
+        "description": "Detects IgM antibodies for measles.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "expectedValues": ["Positive", "Negative"] } },
+          "Female": { "All Ages": { "expectedValues": ["Positive", "Negative"] } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "Polio_PCR": {
+        "name": "Polio Virus PCR",
+        "description": "PCR test to detect the polio virus.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "expectedValues": ["Positive", "Negative"] } },
+          "Female": { "All Ages": { "expectedValues": ["Positive", "Negative"] } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "Hepatitis_A_IgM": {
+        "name": "Hepatitis A IgM",
+        "description": "Detects IgM antibodies for hepatitis A.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "expectedValues": ["Positive", "Negative"] } },
+          "Female": { "All Ages": { "expectedValues": ["Positive", "Negative"] } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "HBcIgM": {
+        "name": "Hepatitis B Core IgM",
+        "description": "Detects IgM antibodies for hepatitis B core antigen.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "expectedValues": ["Positive", "Negative"] } },
+          "Female": { "All Ages": { "expectedValues": ["Positive", "Negative"] } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "IGRA_TB": {
+        "name": "Interferon Gamma Release Assay (IGRA)",
+        "description": "Test for tuberculosis infection based on interferon-gamma release.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "expectedValues": ["Positive", "Negative"] } },
+          "Female": { "All Ages": { "expectedValues": ["Positive", "Negative"] } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "Dengue_NS1": {
+        "name": "Dengue NS1 Antigen",
+        "description": "Detects the presence of dengue virus NS1 antigen.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "expectedValues": ["Positive", "Negative"] } },
+          "Female": { "All Ages": { "expectedValues": ["Positive", "Negative"] } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "Malaria_Smear": {
+        "name": "Malaria Parasite Smear",
+        "description": "Microscopic examination for malaria parasites.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "expectedValues": ["Positive", "Negative"] } },
+          "Female": { "All Ages": { "expectedValues": ["Positive", "Negative"] } }
+        },
+        "applicableSex": ["Male", "Female"]
+      }
+    }
+  },
+  "Urinalysis": {
+    "description": "Evaluates various components of urine to assess kidney and urinary tract function.",
+    "testList": {
+      "Urine_pH": {
+        "name": "Urine pH",
+        "description": "Measures the acidity or alkalinity of urine.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 4.5, "high": 8.0, "unit": "pH" } },
+          "Female": { "All Ages": { "low": 4.5, "high": 8.0, "unit": "pH" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "Specific_Gravity": {
+        "name": "Specific Gravity",
+        "description": "Measures the concentration of urine.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "low": 1.005, "high": 1.030, "unit": "ratio" } },
+          "Female": { "All Ages": { "low": 1.005, "high": 1.030, "unit": "ratio" } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "Urine_Protein": {
+        "name": "Urine Protein",
+        "description": "Qualitative assessment of protein in urine.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "expectedValues": ["Negative", "Trace", "1+", "2+", "3+"] } },
+          "Female": { "All Ages": { "expectedValues": ["Negative", "Trace", "1+", "2+", "3+"] } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "Urine_Glucose": {
+        "name": "Urine Glucose",
+        "description": "Qualitative test for the presence of glucose in urine.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "expectedValues": ["Negative", "Positive"] } },
+          "Female": { "All Ages": { "expectedValues": ["Negative", "Positive"] } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "Urine_Ketones": {
+        "name": "Urine Ketones",
+        "description": "Qualitative test for ketones in urine.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "expectedValues": ["Negative", "Positive"] } },
+          "Female": { "All Ages": { "expectedValues": ["Negative", "Positive"] } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "Urine_Blood": {
+        "name": "Urine Blood",
+        "description": "Qualitative test for blood in urine.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "expectedValues": ["Negative", "Positive"] } },
+          "Female": { "All Ages": { "expectedValues": ["Negative", "Positive"] } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "Urine_Nitrites": {
+        "name": "Urine Nitrites",
+        "description": "Qualitative test for nitrites in urine.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "expectedValues": ["Negative", "Positive"] } },
+          "Female": { "All Ages": { "expectedValues": ["Negative", "Positive"] } }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "Leukocyte_Esterase": {
+        "name": "Leukocyte Esterase",
+        "description": "Qualitative test for leukocyte esterase to detect urinary tract infection.",
+        "ageSexGroups": {
+          "Male": { "All Ages": { "expectedValues": ["Negative", "Positive"] } },
+          "Female": { "All Ages": { "expectedValues": ["Negative", "Positive"] } }
+        },
+        "applicableSex": ["Male", "Female"]
+      }
+    }
+  },
+  "Neurological_Assessments": {
+    "description": "Evaluates neurological conditions including stroke risk and transient ischemic events.",
+    "testList": {
+      "Stroke": {
+        "name": "Stroke Assessment",
+        "description": "Evaluates the risk or presence of stroke using clinical criteria and biomarkers.",
+        "ageSexGroups": {
+          "Male": {
+            "Adult (20-59)": { "expectedValues": ["Low Risk", "Moderate Risk", "High Risk"] },
+            "Senior (60+)": { "expectedValues": ["Low Risk", "Moderate Risk", "High Risk"] }
+          },
+          "Female": {
+            "Adult (20-59)": { "expectedValues": ["Low Risk", "Moderate Risk", "High Risk"] },
+            "Senior (60+)": { "expectedValues": ["Low Risk", "Moderate Risk", "High Risk"] }
+          }
+        },
+        "applicableSex": ["Male", "Female"]
+      },
+      "Mild_Stroke": {
+        "name": "Mild Stroke Assessment",
+        "description": "Assesses for signs of mild stroke or transient ischemic attack.",
+        "ageSexGroups": {
+          "Male": {
+            "Adult (20-59)": { "expectedValues": ["Absent", "Present"] },
+            "Senior (60+)": { "expectedValues": ["Absent", "Present"] }
+          },
+          "Female": {
+            "Adult (20-59)": { "expectedValues": ["Absent", "Present"] },
+            "Senior (60+)": { "expectedValues": ["Absent", "Present"] }
+          }
+        },
+        "applicableSex": ["Male", "Female"]
+      }
+    }
+  },
+  "Gastrointestinal_Assessments": {
+    "description": "Evaluates gastrointestinal conditions including diarrhea severity.",
+    "testList": {
+      "Diarrheas": {
+        "name": "Diarrhea Assessment",
+        "description": "Assesses the severity of diarrhea based on clinical observation.",
+        "ageSexGroups": {
+          "Male": {
+            "Child (3-12)": { "expectedValues": ["Normal", "Mild", "Moderate", "Severe"] },
+            "Teen (13-19)": { "expectedValues": ["Normal", "Mild", "Moderate", "Severe"] },
+            "Adult (20-39)": { "expectedValues": ["Normal", "Mild", "Moderate", "Severe"] },
+            "Middle-Aged (40-59)": { "expectedValues": ["Normal", "Mild", "Moderate", "Severe"] },
+            "Senior (60+)": { "expectedValues": ["Normal", "Mild", "Moderate", "Severe"] }
+          },
+          "Female": {
+            "Child (3-12)": { "expectedValues": ["Normal", "Mild", "Moderate", "Severe"] },
+            "Teen (13-19)": { "expectedValues": ["Normal", "Mild", "Moderate", "Severe"] },
+            "Adult (20-39)": { "expectedValues": ["Normal", "Mild", "Moderate", "Severe"] },
+            "Middle-Aged (40-59)": { "expectedValues": ["Normal", "Mild", "Moderate", "Severe"] },
+            "Senior (60+)": { "expectedValues": ["Normal", "Mild", "Moderate", "Severe"] }
+          }
+        },
+        "applicableSex": ["Male", "Female"]
+      }
+    }
+  }
+}
